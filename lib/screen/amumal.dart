@@ -1,3 +1,4 @@
+import 'package:amumal_app/widget/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:amumal_app/model/amumal_data.dart';
 import 'package:amumal_app/widget/detail.dart';
@@ -79,6 +80,7 @@ class Amumal extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar: NavigationBar(location: 0),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:amumal_app/amumal.dart';
+import 'package:amumal_app/screen/amumal.dart';
 
 void main() => runApp(MyApp());
 
