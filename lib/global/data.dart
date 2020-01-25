@@ -2,19 +2,38 @@ import 'package:amumal_app/global/sqlite.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Data {
-  List<Map> amumal;
+  Sqlite sqlite;
 
   Future<Data> load() async {
-    amumal = await Sqlite().list();
+    return await this;
+  }
 
-    return this;
+  void open() async {
+    sqlite = await Sqlite().open();
+  }
+
+  void close() {
+    print('close');
+    //sqlite.close();
+  }
+
+  Future<List<Map>> list() async {
+    await open();
+    List<Map> result = await sqlite.list();
+    print(result);
+    close();
+    return result;
   }
 
   void add(String date, String time, String text) async {
-    await Sqlite().insert(date, time, text);
+    await open();
+    await sqlite.insert(date, time, text);
+    close();
   }
 
   void deleteAll() async {
-    await Sqlite().deleteAll();
+    await open();
+    await sqlite.deleteAll();
+    close();
   }
 }
