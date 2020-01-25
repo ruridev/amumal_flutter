@@ -1,3 +1,4 @@
+import 'package:amumal_app/global/data.dart';
 import 'package:amumal_app/widget/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:amumal_app/model/amumal_data.dart';
@@ -5,35 +6,12 @@ import 'package:amumal_app/widget/detail.dart';
 import 'package:amumal_app/widget/detail_with_header.dart';
 
 class Amumal extends StatelessWidget {
-  List list = new List();
+  Amumal({this.appData});
+
+  final Data appData;
 
   @override
   Widget build(BuildContext context) {
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:34', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:35', text: 'text'));
-    list.add(AmumalData(date: '2011-11-12', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:34', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:35', text: 'text'));
-    list.add(AmumalData(date: '2011-11-12', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:34', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:35', text: 'text'));
-    list.add(AmumalData(date: '2011-11-12', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:34', text: 'text'));
-    list.add(AmumalData(date: '2011-11-11', time: '11:22:35', text: 'text'));
-    list.add(AmumalData(date: '2011-11-12', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-    list.add(AmumalData(date: '2011-11-13', time: '11:22:33', text: 'text'));
-
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -44,16 +22,18 @@ class Amumal extends StatelessWidget {
                   padding: EdgeInsets.all(20.0),
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
+                      AmumalData amumal =
+                          AmumalData(mapData: appData.amumal[index]);
+
                       return (index == 0 ||
-                              list[index - 1].date != list[index].date)
+                              appData.amumal[index - 1]['date'] != amumal.date)
                           ? DetailWithHeader(
-                              date: list[index].date,
-                              time: list[index].time,
-                              text: list[index].text)
-                          : Detail(
-                              time: list[index].time, text: list[index].text);
+                              date: amumal.date,
+                              time: amumal.time,
+                              text: amumal.text)
+                          : Detail(time: amumal.time, text: amumal.text);
                     },
-                    itemCount: list.length,
+                    itemCount: appData.amumal.length,
                   ),
                 ),
               ),
@@ -80,7 +60,8 @@ class Amumal extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: NavigationBar(location: 0),
+        bottomNavigationBar:
+            NavigationBar(location: 0, appData: appData),
       ),
     );
   }
