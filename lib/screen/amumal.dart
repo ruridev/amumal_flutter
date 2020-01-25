@@ -69,7 +69,6 @@ class Amumal extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          print(snapshot);
           return Text('loading...');
         }
         return Text('loading...');

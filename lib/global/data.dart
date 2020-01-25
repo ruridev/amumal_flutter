@@ -13,14 +13,12 @@ class Data {
   }
 
   void close() {
-    print('close');
     //sqlite.close();
   }
 
   Future<List<Map>> list() async {
     await open();
     List<Map> result = await sqlite.list();
-    print(result);
     close();
     return result;
   }

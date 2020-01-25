@@ -13,8 +13,6 @@ class MyApp extends StatelessWidget {
       future: data.load(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          print(snapshot.data);
-          print('1');
           return MaterialApp(
             theme: ThemeData(
               textTheme: TextTheme(
@@ -26,7 +24,6 @@ class MyApp extends StatelessWidget {
             home: Amumal(appData: snapshot.data),
           );
         } else if (snapshot.hasError) {
-          print(snapshot);
           return MaterialApp(home: Text('has error'));
         }
         return MaterialApp(home: Text('loading...'));

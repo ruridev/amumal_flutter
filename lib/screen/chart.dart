@@ -18,9 +18,6 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    print(appData.list());
-
     return SafeArea(
       child: Scaffold(
         body: Container(
