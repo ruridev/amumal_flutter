@@ -17,14 +17,15 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               textTheme: TextTheme(
                 body1: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 18.0,
                 ),
               ),
             ),
             home: Amumal(appData: snapshot.data),
           );
         } else if (snapshot.hasError) {
-          return MaterialApp(home: Text('has error'));
+          print(snapshot);
+          return MaterialApp(home: Text('error...'));
         }
         return MaterialApp(home: Text('loading...'));
       },

@@ -57,7 +57,8 @@ class _AmumalState extends State<Amumal> {
                                     date: amumal.date,
                                     time: amumal.time,
                                     text: amumal.text)
-                                : Detail(time: amumal.time, text: amumal.text);
+                                : Detail(time: snapshot.data[index - 1]['time'] !=
+                                amumal.time ? amumal.time : null, text: amumal.text);
                           },
                           itemCount: snapshot.data.length,
                         ),
@@ -130,7 +131,8 @@ class _AmumalState extends State<Amumal> {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('loading...');
+          print(snapshot);
+          return Text('error...');
         }
         return Text('loading...');
       },
@@ -148,7 +150,6 @@ class _AmumalState extends State<Amumal> {
 
   String ctime() {
     var now = DateTime.now();
-
     return now.hour.toString().padLeft(2, "0") +
         ":" +
         now.minute.toString().padLeft(2, "0") +

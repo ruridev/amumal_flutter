@@ -5,11 +5,12 @@ class Data {
   Sqlite sqlite;
 
   Future<Data> load() async {
-    return await this;
+    sqlite = await Sqlite().init();
+    return this;
   }
 
   void open() async {
-    sqlite = await Sqlite().open();
+    await sqlite.open();
   }
 
   void close() {
@@ -17,8 +18,14 @@ class Data {
   }
 
   Future<List<Map>> list() async {
-    await open();
     List<Map> result = await sqlite.list();
+    close();
+    return result;
+  }
+
+  Future<List<Map>> chart() async {
+    await open();
+    List<Map> result = await sqlite.chart();
     close();
     return result;
   }

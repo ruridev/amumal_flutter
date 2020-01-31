@@ -9,13 +9,23 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(time),
-          SizedBox(
-            width: 12.0,
+          Container(
+            width: 70.0,
+            child: Text(time ?? '',
+                style: TextStyle(
+                  fontSize: 12.0,
+                )),
           ),
-          Text(text),
+          SizedBox(
+            height: 12.0,
+          ),
+          Flexible(
+            child: Text(text),
+          ),
         ],
       ),
     );

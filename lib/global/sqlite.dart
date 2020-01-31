@@ -2,15 +2,13 @@ import 'package:sqflite/sqflite.dart';
 
 class Sqlite {
   Database db;
+  var databasesPath;
 
-  Future<Sqlite> open() async {
-    db = await openDatabase('my_db.db');
-    return this;
-  }
-
-  void init() async {
+  Future<Sqlite> init() async {
+    databasesPath = await getDatabasesPath() + '/' + 'my_db.db';
+    print(databasesPath);
     db = await openDatabase(
-      'my_db.db',
+      databasesPath,
       version: 1,
       onCreate: (Database db, int version) async {
         await db.execute(
@@ -18,10 +16,21 @@ class Sqlite {
         );
       },
     );
+    return this;
+  }
+
+  Future<Sqlite> open() async {
+    db = await openDatabase(databasesPath);
+    return this;
   }
 
   Future<List<Map>> list() async {
     return await db.query('Amumal');
+  }
+
+  Future<List<Map>> chart() async {
+    return await db
+        .rawQuery('select date, count(*) as cnt from Amumal group by date');
   }
 
   void delete(int id) {
@@ -39,7 +48,7 @@ class Sqlite {
   int insert(date, time, text) {
     int id;
     db.rawInsert('INSERT INTO Amumal(date, time, text) VALUES(?, ?, ?)',
-        [date, time, text]).then((id) {
+        [date, time, text]).then((id,) {
       id = id;
     });
     return id;
