@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:amumal_app/model/amumal_data.dart';
 import 'package:amumal_app/widget/detail.dart';
 import 'package:amumal_app/widget/detail_with_header.dart';
+import 'package:amumal_app/widget/text_input_box.dart';
+import 'package:amumal_app/widget/amumal_list.dart';
+import 'package:amumal_app/constrants.dart';
 
 class Amumal extends StatefulWidget {
   Amumal({this.appData});
@@ -26,9 +29,19 @@ class _AmumalState extends State<Amumal> {
     super.dispose();
   }
 
-  final textFieldcontroller = TextEditingController();
   final listViewcontroller = ScrollController();
-  final FocusNode textFieldFocus = FocusNode();
+
+  void addAmumal(amumal) {
+    setState(() {
+      widget.appData.add(cdate(), ctime(), amumal);
+    });
+
+    listViewcontroller.animateTo(
+      listViewcontroller.position.maxScrollExtent + 40,
+      duration: new Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,87 +55,21 @@ class _AmumalState extends State<Amumal> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(20.0),
-                        child: ListView.builder(
-                          controller: listViewcontroller,
-                          itemBuilder: (BuildContext context, int index) {
-                            AmumalData amumal =
-                                AmumalData(mapData: snapshot.data[index]);
-
-                            return (index == 0 ||
-                                    snapshot.data[index - 1]['date'] !=
-                                        amumal.date)
-                                ? DetailWithHeader(
-                                    date: amumal.date,
-                                    time: amumal.time,
-                                    text: amumal.text)
-                                : Detail(time: snapshot.data[index - 1]['time'] !=
-                                amumal.time ? amumal.time : null, text: amumal.text);
-                          },
-                          itemCount: snapshot.data.length,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(12.0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            width: 1.0,
-                            color: Colors.black,
+                      child: InkWell(
+                        onTap: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.white),
+                          padding: EdgeInsets.all(20.0),
+                          child: AmumalList(
+                            data: snapshot.data,
+                            listViewcontroller: listViewcontroller,
                           ),
                         ),
                       ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              focusNode: textFieldFocus,
-                              controller: textFieldcontroller,
-                              decoration: InputDecoration(
-                                //Add th Hint text here.
-                                hintText: '',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                              ),
-                              onSubmitted: (v) {
-                                setState(() {
-                                  widget.appData.add(cdate(), ctime(), v);
-                                });
-                                textFieldcontroller.clear();
-                                FocusScope.of(context)
-                                    .requestFocus(textFieldFocus);
-                                listViewcontroller.animateTo(
-                                  listViewcontroller.position.maxScrollExtent + 40,
-                                  duration: new Duration(milliseconds: 200),
-                                  curve: Curves.easeOut,
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 24.0),
-                          InkWell(
-                            child: Icon(Icons.send),
-                            onTap: () {
-                              setState(() {
-                                widget.appData.add(
-                                    cdate(), ctime(), textFieldcontroller.text);
-                              });
-                              textFieldcontroller.clear();
-                              FocusScope.of(context)
-                                  .requestFocus(textFieldFocus);
-                              listViewcontroller.animateTo(
-                                listViewcontroller.position.maxScrollExtent + 40,
-                                duration: new Duration(milliseconds: 200),
-                                curve: Curves.easeOut,
-                              );
-                            },
-                          )
-                        ],
-                      ),
                     ),
+                    TextInputBox(addAmumal: addAmumal)
                   ],
                 ),
               ),
@@ -152,8 +99,9 @@ class _AmumalState extends State<Amumal> {
     var now = DateTime.now();
     return now.hour.toString().padLeft(2, "0") +
         ":" +
-        now.minute.toString().padLeft(2, "0") +
-        ":" +
-        now.second.toString().padLeft(2, "0");
+        now.minute.toString().padLeft(2, "0"); // +
+    // ":" +
+    // now.second.toString().padLeft(2, "0");
   }
 }
+

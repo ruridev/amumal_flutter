@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:amumal_app/constrants.dart';
 
 class Detail extends StatelessWidget {
   Detail({this.time, this.text});
@@ -16,9 +17,7 @@ class Detail extends StatelessWidget {
           Container(
             width: 70.0,
             child: Text(time ?? '',
-                style: TextStyle(
-                  fontSize: 12.0,
-                )),
+                style: Constrants.cAmumalTextStyle),
           ),
           SizedBox(
             height: 12.0,
